@@ -1,18 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Users</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css">
 </head>
 <body>
-<h1>Users List</h1>
-<a href="/users/add">Add User</a>
+<h1>Users</h1>
 <table border="1">
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Email</th>
+        <th>Age</th>
         <th>Actions</th>
     </tr>
     <c:forEach var="user" items="${users}">
@@ -20,6 +19,7 @@
             <td>${user.id}</td>
             <td>${user.name}</td>
             <td>${user.email}</td>
+            <td>${user.age}</td>
             <td>
                 <a href="/users/edit?id=${user.id}">Edit</a>
                 <a href="/users/delete?id=${user.id}">Delete</a>
@@ -27,5 +27,13 @@
         </tr>
     </c:forEach>
 </table>
+
+<h2>Add User</h2>
+<form:form action="/users/add" method="post" modelAttribute="user">
+    Name: <form:input path="name"/><form:errors path="name"/><br>
+    Email: <form:input path="email"/><form:errors path="email"/><br>
+    Age: <form:input path="age"/><form:errors path="age"/><br>
+    <input type="submit" value="Add">
+</form:form>
 </body>
 </html>
