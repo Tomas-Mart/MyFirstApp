@@ -19,33 +19,33 @@ public class UserController {
 
     @GetMapping
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
     @PostMapping("/add")
     public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("users", userService.getAllUsers());
             return "users";
         }
-        userService.save(user);
+        userService.addUser(user);
         return "redirect:/users";
     }
 
     @PostMapping("/edit")
     public String editUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("users", userService.getAllUsers());
             return "editUser";
         }
-        userService.update(user);
+        userService.updateUser(user);
         return "redirect:/users";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam Long id) {
-        userService.delete(id);
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 }

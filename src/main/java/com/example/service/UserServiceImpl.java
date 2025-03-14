@@ -16,31 +16,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers(); // Используем метод getAllUsers() из репозитория
+    }
+
+    @Override
+    @Transactional
+    public void addUser(User user) {
+        userRepository.saveUser(user); // Используем метод saveUser() из репозитория
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+        userRepository.updateUser(user); // Используем метод updateUser() из репозитория
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.deleteUser(id); // Используем метод deleteUser() из репозитория
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    @Transactional
-    public void save(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public void update(User user) {
-        userRepository.update(user);
-    }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        userRepository.delete(id);
+    public User getUserById(Long id) {
+        return userRepository.getUserById(id); // Используем метод getUserById() из репозитория
     }
 }
