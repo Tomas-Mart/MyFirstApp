@@ -1,7 +1,9 @@
 package com.example.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -12,15 +14,37 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class HibernateConfig {
+
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${db.url}")
+    private String dbUrl;
+
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
+
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/myfirstapp?useSSL=false&serverTimezone=UTC");
-        dataSource.setUsername("root"); // Замените на ваше имя пользователя
-        dataSource.setPassword("root"); // Замените на ваш пароль
+        dataSource.setDriverClassName(dbDriver);
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
         return dataSource;
     }
 
@@ -32,10 +56,9 @@ public class HibernateConfig {
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties props = new Properties();
-        props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        props.setProperty("hibernate.hbm2ddl.auto", "update"); // Автоматическое создание/обновление таблиц
-        props.setProperty("hibernate.show_sql", "true"); // Показывать SQL-запросы в консоли
-        props.setProperty("hibernate.format_sql", "true"); // Форматировать SQL-запросы
+        props.setProperty("hibernate.dialect", hibernateDialect);
+        props.setProperty("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
+        props.setProperty("hibernate.show_sql", hibernateShowSql);
 
         em.setJpaProperties(props);
         return em;
