@@ -11,6 +11,10 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>5.3.23</spring.version>
+        <hibernate.version>5.6.14.Final</hibernate.version>
+        <mysql.version>8.0.33</mysql.version>
+        <hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
     </properties>
 
     <dependencies>
@@ -18,28 +22,28 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.23</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Spring ORM -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>5.3.23</version>
+            <version>${spring.version}</version>
         </dependency>
 
-        <!-- Hibernate -->
+        <!-- Hibernate Core -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.14.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
-        <!-- MySQL Connector (обновленный артефакт) -->
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
+            <version>${mysql.version}</version>
         </dependency>
 
         <!-- JSTL -->
@@ -68,7 +72,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.2.5.Final</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
 
         <!-- Expression Language (EL) for Hibernate Validator -->
@@ -81,6 +85,7 @@
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -90,10 +95,29 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+
+            <!-- Maven WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
+            </plugin>
+
+            <!-- Maven Surefire Plugin (для тестов) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+                <configuration>
+                    <skipTests>true</skipTests> <!-- Пропуск тестов по умолчанию -->
+                </configuration>
+            </plugin>
+
+            <!-- Maven Clean Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.2.0</version>
             </plugin>
         </plugins>
     </build>

@@ -14,16 +14,16 @@ public class User {
 
     @NotBlank(message = "Name is mandatory")
     @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]+$", message = "Name should contain only letters")
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Min(value = 1, message = "Age must be greater than 0")
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private int age;
 
     // Геттеры и сеттеры

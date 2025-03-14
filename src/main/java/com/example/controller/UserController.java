@@ -9,18 +9,38 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
         return "users";
+    }
+
+    @GetMapping("/details")
+    public String getUserDetails(@RequestParam Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "user-details";
+    }
+
+    @GetMapping("/edit")
+    public String showEditForm(@RequestParam Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "editUser";
     }
 
     @PostMapping("/add")
