@@ -12,17 +12,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory")
-    @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]+$", message = "Name should contain only letters")
+    @NotBlank(message = "Имя обязательно для заполнения")
+    @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]+$", message = "Имя должно содержать только буквы")
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "Электронная почта обязательна для заполнения")
+    @Email(message = "Некорректный формат электронной почты")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Min(value = 1, message = "Age must be greater than 0")
+    @Min(value = 1, message = "Возраст должен быть больше 0")
     @Column(name = "age", nullable = false)
     private int age;
 
