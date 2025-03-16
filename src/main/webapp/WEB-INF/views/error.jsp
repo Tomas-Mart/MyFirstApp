@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="ru" />
 <fmt:setBundle basename="messages" />
@@ -16,9 +16,9 @@
   <h1><fmt:message key="error.header" /></h1>
 
   <!-- Отображение общих ошибок -->
-  <c:if test="${not empty error}">
+  <c:if test="${not empty errorMessage}">
     <div class="error-message">
-        ${error}
+        ${errorMessage}
     </div>
   </c:if>
 

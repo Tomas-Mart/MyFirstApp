@@ -67,7 +67,7 @@ public class UserController {
         User user = userService.getUserById(id);
         if (user == null) {
             logger.warn("Пользователь с id {} не найден", id);
-            model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
+            model.addAttribute("errorMessage", messageSource.getMessage("error.general", null, Locale.getDefault()));
             return "redirect:/users";
         }
         model.addAttribute("user", user);
@@ -126,7 +126,7 @@ public class UserController {
             logger.info("Пользователь успешно удален с id: {}", id);
         } catch (Exception e) {
             logger.error("Ошибка при удалении пользователя с id {}: {}", id, e.getMessage());
-            model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
+            model.addAttribute("errorMessage", messageSource.getMessage("error.general", null, Locale.getDefault()));
         }
         return "redirect:/users";
     }
@@ -140,7 +140,7 @@ public class UserController {
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e, Model model) {
         logger.error("Произошла ошибка: {}", e.getMessage());
-        model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
+        model.addAttribute("errorMessage", messageSource.getMessage("error.general", null, Locale.getDefault()));
         return "error"; // Возвращает страницу с ошибкой
     }
 }

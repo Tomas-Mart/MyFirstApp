@@ -16,9 +16,9 @@
     <h1><fmt:message key="userDetails.header" /></h1>
 
     <!-- Отображение общих ошибок -->
-    <c:if test="${not empty error}">
+    <c:if test="${not empty errorMessage}">
         <div class="error-message">
-                ${error}
+                ${errorMessage}
         </div>
     </c:if>
 

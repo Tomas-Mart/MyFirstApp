@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -17,9 +18,9 @@
     <h1><fmt:message key="users.header" /></h1>
 
     <!-- Отображение общих ошибок -->
-    <c:if test="${not empty error}">
+    <c:if test="${not empty errorMessage}">
         <div class="error-message">
-                ${error}
+                ${errorMessage}
         </div>
     </c:if>
 
@@ -27,7 +28,7 @@
     <c:if test="${not empty errors}">
         <div class="error-message">
             <ul>
-                <c:forEach items="${errors}" var="error">
+                <c:forEach items="${errors.allErrors}" var="error">
                     <li>${error.defaultMessage}</li>
                 </c:forEach>
             </ul>

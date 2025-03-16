@@ -9,16 +9,14 @@
 <head>
     <title><fmt:message key="home.title" /></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css">
-    <!-- Подключение Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Основные стили */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column; /* Вертикальное расположение */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -58,23 +56,10 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            a {
-                font-size: 1rem;
-                padding: 12px 24px;
-            }
-        }
-
         .spacer {
-            height: 15cm; /* Отступ 15 см */
+            height: 15cm;
         }
 
-        /* Стили для отображения ошибок */
         .error-message {
             font-size: 1.2rem;
             color: #ff6b6b;
@@ -90,9 +75,9 @@
 <div class="spacer"></div>
 
 <!-- Отображение общих ошибок -->
-<c:if test="${not empty error}">
+<c:if test="${not empty errorMessage}">
     <div class="error-message">
-            ${error}
+            ${errorMessage}
     </div>
 </c:if>
 
@@ -100,7 +85,7 @@
 <c:if test="${not empty errors}">
     <div class="error-message">
         <ul>
-            <c:forEach items="${errors}" var="error">
+            <c:forEach items="${errors.allErrors}" var="error">
                 <li>${error.defaultMessage}</li>
             </c:forEach>
         </ul>
