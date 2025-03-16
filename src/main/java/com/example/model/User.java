@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users") // Убедитесь, что таблица "users" существует в базе данных
 public class User {
 
     @Id
@@ -14,16 +14,16 @@ public class User {
 
     @NotBlank(message = "Имя обязательно для заполнения")
     @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]+$", message = "Имя должно содержать только буквы")
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false) // Убедитесь, что колонка "name" существует в таблице
     private String name;
 
     @NotBlank(message = "Электронная почта обязательна для заполнения")
     @Email(message = "Некорректный формат электронной почты")
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true) // Убедитесь, что колонка "email" существует в таблице
     private String email;
 
     @Min(value = 1, message = "Возраст должен быть больше 0")
-    @Column(name = "age", nullable = false)
+    @Column(name = "age", nullable = false) // Убедитесь, что колонка "age" существует в таблице
     private int age;
 
     // Геттеры и сеттеры
@@ -39,7 +39,6 @@ public class User {
         return name;
     }
 
-    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }
@@ -48,7 +47,6 @@ public class User {
         return email;
     }
 
-    @SuppressWarnings("unused")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -57,7 +55,6 @@ public class User {
         return age;
     }
 
-    @SuppressWarnings("unused")
     public void setAge(int age) {
         this.age = age;
     }

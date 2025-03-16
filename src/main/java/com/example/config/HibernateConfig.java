@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:db.properties") // Указываем файл с настройками
 @EnableTransactionManagement
 public class HibernateConfig {
 
@@ -39,14 +39,20 @@ public class HibernateConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.example.model");
+        em.setPackagesToScan("com.example.model"); // Указываем пакет для сканирования сущностей
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties props = new Properties();
+        // Настройки Hibernate
         props.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        props.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         props.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        props.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+
+        // Настройки кодировки (загружаются из db.properties)
+        props.setProperty("hibernate.connection.charset", env.getProperty("hibernate.connection.charset"));
+        props.setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.useUnicode"));
+        props.setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
 
         em.setJpaProperties(props);
         return em;
