@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping
     public String getAllUsers(Model model) {
         List<User> users = userService.getAllUsers();
-        logger.info("Fetched users: {}", users);
+        logger.info("Получен список пользователей: {}", users);
         model.addAttribute("users", users);
         return "users";
     }
@@ -53,40 +53,31 @@ public class UserController {
     // Просмотр деталей пользователя
     @GetMapping("/details")
     public String getUserDetails(@RequestParam Long id, Model model) {
-        User user = userService.getUserById(id);
-        if (user == null) {
-            logger.warn("User with id {} not found", id);
-            model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
-            return "redirect:/users";
-        }
-        model.addAttribute("user", user);
-        return "user-details";
+        return handleUserById(id, model, "user-details");
     }
 
     // Отображение формы редактирования пользователя
     @GetMapping("/edit")
     public String showEditForm(@RequestParam Long id, Model model) {
+        return handleUserById(id, model, "edit-user");
+    }
+
+    // Общий метод для обработки пользователя по ID
+    private String handleUserById(Long id, Model model, String viewName) {
         User user = userService.getUserById(id);
         if (user == null) {
-            logger.warn("User with id {} not found", id);
+            logger.warn("Пользователь с id {} не найден", id);
             model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
             return "redirect:/users";
         }
         model.addAttribute("user", user);
-        return "edit-user";
+        return viewName;
     }
 
     // Обновление данных пользователя
     @PostMapping("/update")
     public String updateUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            logger.warn("Validation errors while updating user: {}", result.getAllErrors());
-            model.addAttribute("errors", result.getAllErrors());
-            return "edit-user";
-        }
-        userService.updateUser(user);
-        logger.info("User updated successfully: {}", user);
-        return "redirect:/users";
+        return handleUserSave(user, result, model, "edit-user", "Пользователь успешно обновлен: {}");
     }
 
     // Отображение формы добавления пользователя
@@ -99,21 +90,31 @@ public class UserController {
     // Добавление нового пользователя
     @PostMapping("/add")
     public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            logger.warn("Validation errors while adding user: {}", result.getAllErrors());
-            model.addAttribute("errors", result.getAllErrors());
-            return "add-user";
-        }
-
-        // Дополнительная проверка имени
-        if (!user.getName().matches("^[a-zA-Zа-яА-Я\\s]+$")) {
-            logger.warn("Invalid name format: {}", user.getName());
+        if (!isValidName(user.getName())) {
+            logger.warn("Некорректный формат имени: {}", user.getName());
             result.rejectValue("name", "error.user", "Имя должно содержать только буквы.");
             return "add-user";
         }
+        return handleUserSave(user, result, model, "add-user", "Пользователь успешно добавлен: {}");
+    }
 
-        userService.addUser(user);
-        logger.info("User added successfully: {}", user);
+    // Общий метод для сохранения пользователя
+    private String handleUserSave(User user, BindingResult result, Model model, String errorView, String successLogMessage) {
+        if (result.hasErrors()) {
+            logger.warn("Ошибки валидации при сохранении пользователя: {}", result.getAllErrors());
+            model.addAttribute("errors", result.getAllErrors()); // Используем "errors" для ошибок валидации
+            return errorView;
+        }
+
+        // Если у пользователя есть ID, значит, это обновление, иначе — добавление
+        if (user.getId() != null) {
+            userService.updateUser(user); // Используем метод updateUser
+            logger.info(successLogMessage, user);
+        } else {
+            userService.addUser(user); // Используем метод addUser
+            logger.info(successLogMessage, user);
+        }
+
         return "redirect:/users";
     }
 
@@ -122,18 +123,23 @@ public class UserController {
     public String deleteUser(@RequestParam Long id, Model model) {
         try {
             userService.deleteUser(id);
-            logger.info("User deleted successfully with id: {}", id);
+            logger.info("Пользователь успешно удален с id: {}", id);
         } catch (Exception e) {
-            logger.error("Error deleting user with id {}: {}", id, e.getMessage());
+            logger.error("Ошибка при удалении пользователя с id {}: {}", id, e.getMessage());
             model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
         }
         return "redirect:/users";
     }
 
+    // Проверка валидности имени
+    private boolean isValidName(String name) {
+        return name.matches("^[a-zA-Zа-яА-Я\\s]+$");
+    }
+
     // Обработка общих ошибок
     @ExceptionHandler(Exception.class)
     public String handleException(Exception e, Model model) {
-        logger.error("An error occurred: {}", e.getMessage());
+        logger.error("Произошла ошибка: {}", e.getMessage());
         model.addAttribute("error", messageSource.getMessage("error.general", null, Locale.getDefault()));
         return "error"; // Возвращает страницу с ошибкой
     }

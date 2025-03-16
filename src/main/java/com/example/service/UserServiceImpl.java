@@ -24,18 +24,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        logger.info("Fetching all users");
+        logger.info("Получение списка всех пользователей");
         return userRepository.getAllUsers();
     }
 
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        logger.info("Fetching user by id: {}", id);
+        logger.info("Поиск пользователя по ID: {}", id);
         User user = userRepository.getUserById(id);
         if (user == null) {
-            logger.warn("User with id {} not found", id);
-            throw new RuntimeException("User not found");
+            logger.warn("Пользователь с ID {} не найден", id);
+            throw new RuntimeException("Пользователь не найден");
         }
         return user;
     }
@@ -45,25 +45,25 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) {
         // Дополнительная проверка имени
         if (!user.getName().matches("^[a-zA-Zа-яА-Я\\s]+$")) {
-            logger.warn("Invalid name format: {}", user.getName());
+            logger.warn("Некорректный формат имени: {}", user.getName());
             throw new IllegalArgumentException("Имя должно содержать только буквы.");
         }
 
-        logger.info("Adding user: {}", user);
+        logger.info("Добавление нового пользователя: {}", user);
         userRepository.saveUser(user);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
-        logger.info("Updating user: {}", user);
+        logger.info("Обновление пользователя: {}", user);
         userRepository.updateUser(user);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        logger.info("Deleting user with id: {}", id);
+        logger.info("Удаление пользователя с ID: {}", id);
         userRepository.deleteUser(id);
     }
 }

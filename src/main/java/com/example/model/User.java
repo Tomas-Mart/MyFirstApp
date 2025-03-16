@@ -39,6 +39,7 @@ public class User {
         return name;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }
@@ -47,6 +48,7 @@ public class User {
         return email;
     }
 
+    @SuppressWarnings("unused")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -55,6 +57,7 @@ public class User {
         return age;
     }
 
+    @SuppressWarnings("unused")
     public void setAge(int age) {
         this.age = age;
     }

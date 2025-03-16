@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <fmt:setLocale value="ru" />
 <fmt:setBundle basename="messages" />
@@ -72,10 +73,40 @@
         .spacer {
             height: 15cm; /* Отступ 15 см */
         }
+
+        /* Стили для отображения ошибок */
+        .error-message {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
 <div class="spacer"></div>
+
+<!-- Отображение общих ошибок -->
+<c:if test="${not empty error}">
+    <div class="error-message">
+            ${error}
+    </div>
+</c:if>
+
+<!-- Отображение ошибок валидации -->
+<c:if test="${not empty errors}">
+    <div class="error-message">
+        <ul>
+            <c:forEach items="${errors}" var="error">
+                <li>${error.defaultMessage}</li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
+
 <h1><fmt:message key="home.welcome" /></h1>
 <div class="spacer"></div>
 <a href="${pageContext.request.contextPath}/users"><fmt:message key="home.viewUsers" /></a>

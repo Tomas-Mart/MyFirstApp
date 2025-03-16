@@ -15,13 +15,29 @@
 <div class="container">
     <h1><fmt:message key="userDetails.header" /></h1>
 
+    <!-- Отображение общих ошибок -->
+    <c:if test="${not empty error}">
+        <div class="error-message">
+                ${error}
+        </div>
+    </c:if>
+
     <!-- Отображение деталей пользователя -->
-    <div class="user-details">
-        <p><strong><fmt:message key="userDetails.id" />:</strong> ${user.id}</p>
-        <p><strong><fmt:message key="userDetails.name" />:</strong> ${user.name}</p>
-        <p><strong><fmt:message key="userDetails.email" />:</strong> ${user.email}</p>
-        <p><strong><fmt:message key="userDetails.age" />:</strong> ${user.age}</p>
-    </div>
+    <c:if test="${not empty user}">
+        <div class="user-details">
+            <p><strong><fmt:message key="userDetails.id" />:</strong> ${user.id}</p>
+            <p><strong><fmt:message key="userDetails.name" />:</strong> ${user.name}</p>
+            <p><strong><fmt:message key="userDetails.email" />:</strong> ${user.email}</p>
+            <p><strong><fmt:message key="userDetails.age" />:</strong> ${user.age}</p>
+        </div>
+    </c:if>
+
+    <!-- Сообщение, если пользователь не найден -->
+    <c:if test="${empty user}">
+        <div class="error-message">
+            <fmt:message key="userDetails.notFound" />
+        </div>
+    </c:if>
 
     <!-- Ссылка для возврата к списку пользователей -->
     <a href="${pageContext.request.contextPath}/users" class="btn-link"><fmt:message key="userDetails.backToList" /></a>

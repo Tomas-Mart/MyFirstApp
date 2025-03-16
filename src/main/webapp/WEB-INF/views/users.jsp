@@ -10,176 +10,7 @@
     <meta charset="UTF-8">
     <title><fmt:message key="users.title" /></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/styles.css">
-    <!-- Подключение Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Основные стили */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f4f4f9, #e0e0e7);
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2 {
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-top: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: 500;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 5px;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        .btn-edit {
-            background-color: #28a745;
-        }
-
-        .btn-edit:hover {
-            background-color: #218838;
-        }
-
-        .btn-link {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #6c757d; /* Серый цвет */
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-link:hover {
-            background-color: #4caf50; /* Зеленый цвет при наведении */
-        }
-
-        .btn-link:active {
-            background-color: #4caf50; /* Зеленый цвет при нажатии */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .error-message {
-            color: #dc3545;
-            background-color: #f8d7da;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            table, th, td {
-                font-size: 0.9rem;
-            }
-
-            .btn {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -189,6 +20,17 @@
     <c:if test="${not empty error}">
         <div class="error-message">
                 ${error}
+        </div>
+    </c:if>
+
+    <!-- Отображение ошибок валидации -->
+    <c:if test="${not empty errors}">
+        <div class="error-message">
+            <ul>
+                <c:forEach items="${errors}" var="error">
+                    <li>${error.defaultMessage}</li>
+                </c:forEach>
+            </ul>
         </div>
     </c:if>
 
@@ -211,13 +53,8 @@
                 <td>${user.email}</td>
                 <td>${user.age}</td>
                 <td>
-                    <!-- Ссылка для просмотра деталей -->
                     <a href="${pageContext.request.contextPath}/users/details?id=${user.id}" class="btn-link"><fmt:message key="users.details" /></a>
-
-                    <!-- Ссылка для редактирования -->
                     <a href="${pageContext.request.contextPath}/users/edit?id=${user.id}" class="btn-link"><fmt:message key="users.edit" /></a>
-
-                    <!-- Форма для удаления пользователя -->
                     <form action="${pageContext.request.contextPath}/users/delete" method="post" style="display: inline;">
                         <input type="hidden" name="id" value="${user.id}">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('<fmt:message key="users.deleteConfirmation" />')"><fmt:message key="users.delete" /></button>

@@ -20,18 +20,18 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        logger.info("Fetching all users");
+        logger.info("Получение списка всех пользователей из базы данных");
         return entityManager.createQuery("FROM User", User.class).getResultList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        logger.info("Fetching user by id: {}", id);
+        logger.info("Поиск пользователя по ID: {}", id);
         User user = entityManager.find(User.class, id);
         if (user == null) {
-            logger.warn("User with id {} not found", id);
-            throw new RuntimeException("User not found");
+            logger.warn("Пользователь с ID {} не найден в базе данных", id);
+            throw new RuntimeException("Пользователь не найден");
         }
         return user;
     }
@@ -39,27 +39,30 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public void saveUser(User user) {
-        logger.info("Saving user: {}", user);
+        logger.info("Сохранение нового пользователя: {}", user);
         entityManager.persist(user);
+        logger.info("Пользователь успешно сохранен: {}", user);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
-        logger.info("Updating user: {}", user);
+        logger.info("Обновление пользователя с ID {}: {}", user.getId(), user);
         entityManager.merge(user);
+        logger.info("Пользователь успешно обновлен: {}", user);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        logger.info("Deleting user with id: {}", id);
+        logger.info("Попытка удаления пользователя с ID: {}", id);
         User user = entityManager.find(User.class, id);
         if (user != null) {
             entityManager.remove(user);
+            logger.info("Пользователь с ID {} успешно удален", id);
         } else {
-            logger.warn("User with id {} not found", id);
-            throw new RuntimeException("User not found");
+            logger.warn("Пользователь с ID {} не найден для удаления", id);
+            throw new RuntimeException("Пользователь не найден");
         }
     }
 }

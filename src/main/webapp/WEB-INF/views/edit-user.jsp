@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="ru" />
@@ -35,40 +34,25 @@
     </c:if>
 
     <!-- Форма для редактирования пользователя -->
-    <div class="form-container">
-        <form:form action="${pageContext.request.contextPath}/users/update" method="post" modelAttribute="user">
-            <form:hidden path="id"/> <!-- Скрытое поле для ID пользователя -->
+    <form action="${pageContext.request.contextPath}/users/update" method="post">
+        <input type="hidden" name="id" value="${user.id}">
+        <div>
+            <label for="name"><fmt:message key="addUser.name" />:</label>
+            <input type="text" id="name" name="name" value="${user.name}" class="form-input" required>
+        </div>
+        <div>
+            <label for="email"><fmt:message key="addUser.email" />:</label>
+            <input type="email" id="email" name="email" value="${user.email}" class="form-input" required>
+        </div>
+        <div>
+            <label for="age"><fmt:message key="addUser.age" />:</label>
+            <input type="number" id="age" name="age" value="${user.age}" class="form-input" required>
+        </div>
+        <button type="submit" class="btn"><fmt:message key="editUser.submit" /></button>
+    </form>
 
-            <!-- Поле для имени -->
-            <div>
-                <label for="name"><fmt:message key="addUser.name" />:</label>
-                <form:input path="name" id="name" cssClass="form-input"/>
-                <form:errors path="name" cssClass="error"/>
-            </div>
-
-            <!-- Поле для email -->
-            <div>
-                <label for="email"><fmt:message key="addUser.email" />:</label>
-                <form:input path="email" id="email" cssClass="form-input"/>
-                <form:errors path="email" cssClass="error"/>
-            </div>
-
-            <!-- Поле для возраста -->
-            <div>
-                <label for="age"><fmt:message key="addUser.age" />:</label>
-                <form:input path="age" id="age" type="number" cssClass="form-input"/>
-                <form:errors path="age" cssClass="error"/>
-            </div>
-
-            <!-- Кнопка для сохранения -->
-            <div>
-                <button type="submit" class="btn"><fmt:message key="editUser.submit" /></button>
-            </div>
-        </form:form>
-
-        <!-- Ссылка для возврата к списку пользователей -->
-        <a href="${pageContext.request.contextPath}/users" class="btn-link"><fmt:message key="addUser.backToList" /></a>
-    </div>
+    <!-- Ссылка для возврата к списку пользователей -->
+    <a href="${pageContext.request.contextPath}/users" class="btn-link"><fmt:message key="addUser.backToList" /></a>
 </div>
 </body>
 </html>
