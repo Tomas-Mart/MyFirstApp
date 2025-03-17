@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteUser(id);
         logger.info("Пользователь с ID {} успешно удален", id);
     }
-
+    
     private void validateUserName(String name) {
         if (name == null || !name.matches("^[a-zA-Zа-яА-Я\\s]+$")) {
             logger.warn("Некорректный формат имени: {}", name);
