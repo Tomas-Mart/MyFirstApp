@@ -24,46 +24,47 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        logger.info("Получение списка всех пользователей");
+        logger.info("Запрос на получение списка всех пользователей");
         return userRepository.getAllUsers();
     }
 
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        logger.info("Поиск пользователя по ID: {}", id);
-        User user = userRepository.getUserById(id);
-        if (user == null) {
-            logger.warn("Пользователь с ID {} не найден", id);
-            throw new RuntimeException("Пользователь не найден");
-        }
-        return user;
+        logger.info("Запрос на получение пользователя по ID: {}", id);
+        return userRepository.getUserById(id);
     }
 
     @Override
     @Transactional
     public void addUser(User user) {
-        // Дополнительная проверка имени
-        if (!user.getName().matches("^[a-zA-Zа-яА-Я\\s]+$")) {
-            logger.warn("Некорректный формат имени: {}", user.getName());
-            throw new IllegalArgumentException("Имя должно содержать только буквы.");
-        }
-
-        logger.info("Добавление нового пользователя: {}", user);
+        validateUserName(user.getName());
+        logger.info("Запрос на добавление нового пользователя: {}", user);
         userRepository.saveUser(user);
+        logger.info("Пользователь успешно добавлен: {}", user);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
-        logger.info("Обновление пользователя: {}", user);
+        validateUserName(user.getName());
+        logger.info("Запрос на обновление пользователя: {}", user);
         userRepository.updateUser(user);
+        logger.info("Пользователь успешно обновлен: {}", user);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        logger.info("Удаление пользователя с ID: {}", id);
+        logger.info("Запрос на удаление пользователя с ID: {}", id);
         userRepository.deleteUser(id);
+        logger.info("Пользователь с ID {} успешно удален", id);
+    }
+
+    private void validateUserName(String name) {
+        if (name == null || !name.matches("^[a-zA-Zа-яА-Я\\s]+$")) {
+            logger.warn("Некорректный формат имени: {}", name);
+            throw new IllegalArgumentException("Имя должно содержать только буквы и пробелы.");
+        }
     }
 }
