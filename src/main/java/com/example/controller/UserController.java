@@ -68,7 +68,7 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("errors", result); // Передаем BindingResult в модель
             return "edit-user";
         }
         userService.updateUser(user);
@@ -84,7 +84,7 @@ public class UserController {
     @PostMapping("/add")
     public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("errors", result); // Передаем BindingResult в модель
             return "add-user";
         }
         userService.addUser(user);
