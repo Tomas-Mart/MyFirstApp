@@ -215,4 +215,14 @@ tr:hover {
     .user-details {
         padding: 15px;
     }
+
+    .error-input {
+        border: 2px solid red;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+
 }
