@@ -47,6 +47,10 @@
             <label for="age"><fmt:message key="addUser.age" />:</label>
             <input type="number" id="age" name="age" class="form-input" required>
         </div>
+        <div>
+            <label for="password"><fmt:message key="addUser.password" />:</label>
+            <input type="password" id="password" name="password" class="form-input" required>
+        </div>
         <button type="submit" class="btn"><fmt:message key="addUser.submit" /></button>
     </form>
 

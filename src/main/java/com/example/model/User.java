@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users") // Убедитесь, что таблица "users" существует в базе данных
+@Table(name = "users")
 public class User {
 
     @Id
@@ -14,17 +14,21 @@ public class User {
 
     @NotBlank(message = "Имя обязательно для заполнения")
     @Pattern(regexp = "^[a-zA-Zа-яА-Я\\s]+$", message = "Имя должно содержать только буквы")
-    @Column(name = "name", nullable = false) // Убедитесь, что колонка "name" существует в таблице
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotBlank(message = "Электронная почта обязательна для заполнения")
     @Email(message = "Некорректный формат электронной почты")
-    @Column(name = "email", nullable = false, unique = true) // Убедитесь, что колонка "email" существует в таблице
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Min(value = 1, message = "Возраст должен быть больше 0")
-    @Column(name = "age", nullable = false) // Убедитесь, что колонка "age" существует в таблице
+    @Column(name = "age", nullable = false)
     private int age;
+
+    @NotEmpty(message = "Пароль обязателен для заполнения")
+    @Column(name = "password", nullable = false)
+    private String password;
 
     // Геттеры и сеттеры
     public Long getId() {
@@ -39,7 +43,6 @@ public class User {
         return name;
     }
 
-    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }
@@ -48,7 +51,6 @@ public class User {
         return email;
     }
 
-    @SuppressWarnings("unused")
     public void setEmail(String email) {
         this.email = email;
     }
@@ -57,9 +59,16 @@ public class User {
         return age;
     }
 
-    @SuppressWarnings("unused")
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -67,12 +76,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email);
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age);
+        return Objects.hash(id, name, email, age, password);
     }
 
     @Override
@@ -82,6 +91,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
